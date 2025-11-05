@@ -4,15 +4,15 @@ from colorama import Fore, init
 
 init(autoreset=True)
 
-def directory_visualization (path):
+def directory_visualization (path: Path, prefix: str = " "):
 
     try:
         for item in sorted(path.iterdir()):
             if item.is_dir():
-                print(Fore.BLUE + item.name + "/")
-                directory_visualization(item)
+                print(f'{prefix}{Fore.BLUE + item.name + "/"}')
+                directory_visualization(item, prefix + "     ")
             else:
-                print("|____" + Fore.GREEN+item.name)
+                print(f'{prefix}{Fore.GREEN+item.name}')
     except PermissionError:
         print(Fore.RED + "You do not have permission to directory" + str(path))
     except FileNotFoundError:

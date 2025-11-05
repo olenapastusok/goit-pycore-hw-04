@@ -9,15 +9,17 @@ def total_salary (path):
             new_salary_info = {}
 
             for employee_name, salary_range in lines:
-                new_salary_info[employee_name] = int(salary_range.strip())
+                new_salary_info[employee_name] = float(salary_range.strip())
             
             total_salary_sum = 0
             for salary in new_salary_info.values():
                 total_salary_sum += salary
 
-            average_salary = total_salary_sum / len(new_salary_info)
+            if len(new_salary_info) != 0:
+                average_salary = total_salary_sum / len(new_salary_info)
+            else: ZeroDivisionError
 
-        return total_salary_sum, int(average_salary)
+        return total_salary_sum, float(average_salary)
     except FileNotFoundError:
         return "File does not exist"
     except UnicodeDecodeError:

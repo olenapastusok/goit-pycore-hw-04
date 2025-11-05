@@ -19,13 +19,19 @@ def parse_input(user_input: str):
     return cmd, *args
 
 
-def add_contact(contacts: dict, name: str, phone_number: str):
+def add_contact(contacts: dict, args: list):
+    if len(args) != 2:
+        return "Please use the following format: add <user name> <user phone>"
+    name, phone_number = args
     key = name.lower()
     contacts[key] = (name, phone_number)
     return "Contact added."
 
 
-def change_contact(contacts: dict, name: str, new_phone_number: str):
+def change_contact(contacts: dict, args: list):
+    if len(args) != 2:
+        return "Please use the following format: change <user name> <user phone>"
+    name, new_phone_number = args
     key = name.lower()
     if key in contacts:
         original_name, _ = contacts[key]
@@ -35,7 +41,10 @@ def change_contact(contacts: dict, name: str, new_phone_number: str):
         return("Contact was not found.")
 
 
-def show_phone(contacts: dict, name: str):
+def show_phone(contacts: dict, args: list):
+    if len(args) != 1:
+        return "Please use the following format: phone <user name>"
+    name = args[0]
     key = name.lower()
     if key in contacts:
         _, phone_number = contacts[key]
@@ -46,11 +55,11 @@ def show_phone(contacts: dict, name: str):
 
 def show_all(contacts: dict):
     if not contacts:
-        print("There are no any contacts.")
-        return
+        return "There are no any contacts."
+    result = []
     for _, (display_name, phone_number) in contacts.items():
-        return (f"{display_name} : {phone_number}")
-
+        result.append(f"{display_name} : {phone_number}")
+    return "\n".join(result)
 
 
 def main():
@@ -79,14 +88,11 @@ def main():
         elif command == "hello":
             print("How can I help you?")
         elif command == "add":
-            name, phone_number = args
-            print(add_contact(contacts, name, phone_number))
+            print(add_contact(contacts, args))
         elif command == "change":
-            name, phone_number = args
-            print(change_contact(contacts, name, phone_number))
+            print(change_contact(contacts, args))
         elif command == "phone":
-            name = args[0]
-            print(show_phone(contacts, name))
+            print(show_phone(contacts, args))
         elif command == "all" or "show_all":
             print(show_all(contacts))
         else:
